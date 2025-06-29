@@ -7,22 +7,23 @@ from typing import (
     Dict,
     Generic,
     Iterator,
+    Optional,
     Tuple,
     Type,
     TypeVar,
-    cast, Optional,
+    cast,
 )
-
-import httpx
 from typing_extensions import Self, TypeAlias, override
 
 import cv2
+import httpx
 import numpy as np
 from nonebot import logger
 from nonebot.drivers import Request
-from nonebot.matcher import current_bot, current_event, current_matcher
+from nonebot.matcher import current_bot
 from nonebot_plugin_alconna.builtins.uniseg.market_face import MarketFace
 from nonebot_plugin_alconna.uniseg import Image, Segment, UniMessage
+
 # from nonebot_plugin_alconna.uniseg.tools import image_fetch
 from PIL import Image as Img, ImageSequence
 
@@ -130,8 +131,8 @@ async def _(source: PilImageFrameSource, frames: Iterator[np.ndarray]) -> Segmen
 
 
 def repack_save(
-        source: FrameSource,
-        frames: Iterator[np.ndarray],
+    source: FrameSource,
+    frames: Iterator[np.ndarray],
 ) -> Awaitable[Segment]:
     if (k := type(source)) not in repack_savers:
         raise NotImplementedError
@@ -157,14 +158,17 @@ async def image_fetch(url: str) -> Optional[bytes]:
         if response.status_code == 200:
             image_data = response.content
             return image_data
-        else:
-            return None
+        return None
 
 
 @source_extractor(Image)
 async def _(seg: Image):
     image = await image_fetch(
-        seg.data['url'].replace('https://multimedia.nt.qq.com.cn/', 'http://multimedia.nt.qq.com.cn/', 1),
+        seg.data["url"].replace(
+            "https://multimedia.nt.qq.com.cn/",
+            "http://multimedia.nt.qq.com.cn/",
+            1,
+        ),
     )
     if not image:
         raise RuntimeError("Cannot fetch image")
@@ -189,7 +193,7 @@ async def extract_source(seg: Segment) -> FrameSource:
 
 
 async def iter_sources_in_message(
-        message: UniMessage,
+    message: UniMessage,
 ) -> AsyncIterator[Tuple[FrameSource, Segment]]:
     for seg in message:
         try:
