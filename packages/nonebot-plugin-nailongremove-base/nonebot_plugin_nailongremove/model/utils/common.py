@@ -30,7 +30,7 @@ if config.nailong_similarity_on:
     from nonebot import logger
     from torch import nn
     from torchvision import transforms
-    import sklearn
+
     transform = transforms.Compose(
         [
             transforms.ToTensor(),
@@ -57,7 +57,8 @@ if config.nailong_similarity_on:
             return self.resnet(x)
 
     features_model = MyModel.from_pretrained(
-        "refoundd/NailongFeatures",cache_dir=config.nailong_model_dir
+        "refoundd/NailongFeatures",
+        cache_dir=config.nailong_model_dir,
     ).to(device)
     index_path = config.nailong_model_dir / "records.index"
     json_path = config.nailong_model_dir / "records.json"

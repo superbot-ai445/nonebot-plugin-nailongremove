@@ -17,7 +17,6 @@ class ModelType(int, Enum):
     HF_YOLO = 3
 
 
-
 class Model1Type(StrEnum):
     TINY = auto()
     M = auto()
@@ -42,7 +41,7 @@ class Config(BaseModel):
     nailong_priority: int = 100
 
     nailong_recall: List[str] = ["nailong"]
-    nailong_mute_seconds: Dict[str,int] = {"nailong":0}
+    nailong_mute_seconds: Dict[str, int] = {"nailong": 0}
     nailong_tip: Dict[str, List[str]] = {
         DEFAULT_LABEL: ["本群禁止发送奶龙！"],
     }
