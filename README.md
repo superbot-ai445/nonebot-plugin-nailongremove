@@ -1,2 +1,1 @@
-# nonebot-plugin-nailongremove
-a simple AI model-based plugin designed to identify "NaiLong" meme images in groups and automatically remove them.
+./packages/nonebot-plugin-nailongremove-base/README.md
